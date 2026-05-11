@@ -3,6 +3,7 @@ let dadosPontos;
 let mapaLinhas = {}; // { idLinha: nomeLinha }
 let grupoVeiculos;
 let grupoPontos;
+let filtroPesquisa; 
 
 const utmFormat = "+proj=utm +zone=23 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
 const urlAPI = "https://corsproxy.io/?url=https://temporeal.pbh.gov.br/?param=D";
@@ -14,6 +15,10 @@ function preload() {
 
 function setup() {
     noCanvas();
+    document.getElementById('filtroLinha').addEventListener('input', function() {
+        filtroPesquisa = this.value.trim();
+        atualizarOnibus();
+    });
 
     // --- Parseia CSV de pontos ---
     let csvString = dadosPontos.join('\n');
@@ -45,7 +50,7 @@ function parsearLinhas(conteudo) {
     for (let i = 1; i < linhas.length; i++) {
         const colunas = linhas[i].split(';');
         if (colunas.length >= 3) {
-            const idLinha = colunas[1].trim();
+            const idLinha = colunas[0].trim();
             const nomeLinha = colunas[2].trim();
             mapa[idLinha] = nomeLinha;
         }
@@ -90,14 +95,14 @@ function atualizarOnibus() {
             grupoVeiculos.clearLayers(); // Remove marcadores antigos
 
             data.forEach(veiculo => {
-                if (!veiculo.latitude || !veiculo.longitude) return;
-
-                const nome = mapaLinhas[veiculo.linha] || veiculo.linha;
+                if (!veiculo.LT || !veiculo.LG) return;
+                if (filtroPesquisa && veiculo.NL != filtroPesquisa) return;
+                const nome = mapaLinhas[veiculo.NL] || veiculo.NL;
                 const marcador = L.circleMarker(
-                    [veiculo.latitude, veiculo.longitude],
+                    [veiculo.LT, veiculo.LG],
                     { radius: 6, color: '#e63946', fillOpacity: 0.9 }
                 );
-                marcador.bindPopup(`<b>Linha ${veiculo.linha}</b><br>${nome}`);
+                marcador.bindPopup(`<b>Linha ${veiculo.NL}</b><br>${nome}`);
                 marcador.addTo(grupoVeiculos);
             });
 
@@ -106,6 +111,3 @@ function atualizarOnibus() {
         .catch(err => console.error("Erro ao buscar ônibus:", err));
 }
 
-function draw() {
-    // Sem canvas — tudo é feito pelo Leaflet
-}
