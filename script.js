@@ -710,6 +710,94 @@ function bindEvents() {
         setTimeout(() => state.map.invalidateSize(), 220);
     });
 }
+//Função para encontrar parada mais próxima
+function findNearestStopGlobal() {
+    if (!state.csvLoaded || state.allPontos.length === 0) {
+        showToast('⚠ Dados de paradas ainda não carregados.');
+        return;
+    }
+
+    if (!state.userLatLng) {
+        showToast('📡 Obtendo sua localização…');
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                const { latitude: lat, longitude: lng } = pos.coords;
+                state.userLatLng = [lat, lng];
+                placeUserMarker(lat, lng);
+                showToast('📍 Localização encontrada!');
+                _doFindNearestStop();
+            },
+            (err) => {
+                console.warn('[GEO]', err.message);
+                showToast('⚠ Não foi possível obter localização.');
+            },
+            { enableHighAccuracy: true, timeout: 10_000 }
+        );
+        return;
+    }
+
+    _doFindNearestStop();
+}
+
+function _doFindNearestStop() {
+    const [userLat, userLng] = state.userLatLng;
+
+    showToast('🔍 Buscando parada mais próxima…');
+
+    // Remove marcador anterior se existir
+    if (state.nearestStopMarker) {
+        state.map.removeLayer(state.nearestStopMarker);
+        state.nearestStopMarker = null;
+    }
+
+    let nearest    = null;
+    let nearestRow = null;
+    let minDist    = Infinity;
+
+    for (const row of state.allPontos) {
+        const latLng = utmToLatLng(row.GEOMETRIA);
+        if (!latLng) continue;
+
+        const dist = haversine(userLat, userLng, latLng[0], latLng[1]);
+        if (dist < minDist) {
+            minDist    = dist;
+            nearest    = latLng;
+            nearestRow = row;
+        }
+    }
+
+    if (!nearest || !nearestRow) {
+        showToast('⚠ Nenhuma parada encontrada.');
+        return;
+    }
+
+    const stopId    = nearestRow.IDENTIFICADOR_PONTO_ONIBUS || nearestRow.ID_PONTO_ONIBUS_LINHA || '–';
+    const nomeLinha = nearestRow.NOME_LINHA || '';
+    const codLinha  = nearestRow.COD_LINHA  || '';
+    const distFmt   = formatDistance(minDist);
+
+    state.nearestStopMarker = L.circleMarker(nearest, {
+        radius:       11,
+        fillColor:    '#ff1744',
+        color:        'rgba(255,23,68,0.45)',
+        weight:       8,
+        fillOpacity:  1,
+        zIndexOffset: 2000,
+    }).bindPopup(`
+      <div class="popup-title" style="color:#ff4569">📍 Parada mais próxima de você</div>
+      <div class="popup-info">
+        ID: <b>${escapeHtml(stopId)}</b><br>
+        Linha: <span class="popup-badge">${escapeHtml(codLinha)}</span><br>
+        ${nomeLinha ? `${escapeHtml(nomeLinha)}<br>` : ''}
+        Distância: <b>${distFmt}</b>
+      </div>
+    `, { maxWidth: 260 }).addTo(state.map);
+
+    state.nearestStopMarker.openPopup();
+    state.map.setView(nearest, Math.max(state.map.getZoom(), 16));
+
+    showToast(`📍 Parada ${stopId} · Linha ${codLinha} · ${distFmt}`, 5000);
+}
 
 // 13. Inicialização Principal
 async function main() {
