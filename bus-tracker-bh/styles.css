@@ -1,0 +1,40 @@
+/* Código CSS adicional */
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background-color: #f8f9fa;
+}
+
+#map {
+    width: 100%;
+    height: calc(100vh - 72px);
+    min-height: 520px;
+}
+
+.painel-controle {
+    z-index: 1000;
+}
+
+.legenda-cor {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.cor-onibus { background-color: #e63946; }
+.cor-ponto { background-color: #1d3557; }
+.cor-proximo { background-color: #2a9d8f; }
+
+@media (max-width: 768px) {
+    #map {
+    height: calc(100vh - 175px);
+    min-height: 420px;
+    }
+}
