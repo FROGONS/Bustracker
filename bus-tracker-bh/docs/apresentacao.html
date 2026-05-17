@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação de Projeto 2025</title>
+    
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Ícones (Substituindo Lucide por FontAwesome para a versão estática) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+
+    <style>
+        /* ---- RESET E BASE ---- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { width: 100%; height: 100%; background: #050508; overflow: hidden; }
+
+        /* ---- REVEAL.JS OVERRIDES ---- */
+        .reveal-viewport { background: #050508; }
+        .reveal .slides { font-family: 'DM Sans', sans-serif; }
+        .reveal h1, .reveal h2, .reveal h3 { font-family: 'Sora', sans-serif; text-transform: none; letter-spacing: -0.02em; margin: 0; }
+        .reveal .progress { color: #6c63ff; height: 4px; }
+        .reveal .controls { color: #6c63ff; }
+        .reveal .slide-number { font-family: 'DM Sans', sans-serif; font-size: 14px; background: transparent; color: rgba(255,255,255,0.5); bottom: 24px; right: 28px; }
+
+        /* ---- SLIDE BASE ---- */
+        .slide-base {
+            width: 100%; height: 100%; display: flex; flex-direction: column;
+            justify-content: center; align-items: flex-start; padding: 80px 100px;
+            position: relative; overflow: hidden; text-align: left;
+        }
+        .slide-base.centered { align-items: center; text-align: center; }
+
+        /* Background overlays */
+        .slide-overlay {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.7) 100%);
+            z-index: -1;
+        }
+
+        /* Formas decorativas */
+        .shape-circle { position: absolute; border-radius: 50%; pointer-events: none; }
+
+        /* ---- TIPOGRAFIA ---- */
+        .slide-tag {
+            display: inline-block; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase; color: #6c63ff;
+            background: rgba(108, 99, 255, 0.12); border: 1px solid rgba(108, 99, 255, 0.3);
+            padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
+        }
+        .subtitle { font-size: 24px; color: rgba(255, 255, 255, 0.5); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+        .slide-h1 { font-size: clamp(52px, 7vw, 82px); font-weight: 800; line-height: 1.1; color: #ffffff; margin-bottom: 24px; }
+        .slide-h2 { font-size: 48px; font-weight: 700; color: #ffffff; margin-bottom: 30px; border-left: 6px solid #6c63ff; padding-left: 20px; }
+        .slide-h2.center { border-left: none; padding-left: 0; text-align: center; font-size: 64px; color: #6c63ff; }
+        .slide-body { font-size: clamp(18px, 2vw, 22px); font-weight: 400; line-height: 1.6; color: rgba(255, 255, 255, 0.7); max-width: 800px; }
+        
+        .accent { color: #6c63ff; }
+        .accent-alert { color: #ff4d4d; }
+        .accent-gradient {
+            background: linear-gradient(135deg, #6c63ff 0%, #a78bfa 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .slide-divider { width: 100px; height: 4px; background: #6c63ff; border-radius: 2px; margin: 20px auto; }
+
+        /* ---- LAYOUTS ---- */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; width: 100%; align-items: center; }
+        .image-wrapper { width: 100%; height: 400px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(108, 99, 255, 0.2); }
+        .image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+
+        .tiled-content { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; margin-top: 20px; }
+        .tile { background: rgba(255, 255, 255, 0.05); padding: 40px 30px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.3s; }
+        .tile-icon { color: #6c63ff; font-size: 40px; margin-bottom: 20px; display: block; }
+        .tile h3 { font-size: 24px; margin-bottom: 15px; color: #fff; }
+
+        .highlight-numbers-layout { display: flex; justify-content: space-around; text-align: center; width: 100%; margin-top: 40px; }
+        .number-box { flex: 1; }
+        .number-box .number { font-family: 'Sora', sans-serif; font-size: 90px; font-weight: 800; color: #6c63ff; line-height: 1; display: block; }
+        .number-box .label { font-size: 18px; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; margin-top: 10px; font-weight: 600; display: block; }
+
+        .timeline-layout { display: flex; justify-content: space-between; position: relative; padding-top: 50px; width: 100%; margin-top: 40px; }
+        .timeline-line { position: absolute; top: 75px; left: 0; width: 100%; height: 2px; background: rgba(108, 99, 255, 0.3); }
+        .timeline-item { flex: 1; text-align: center; position: relative; }
+        .timeline-item::before { content: ''; width: 16px; height: 16px; background: #6c63ff; border-radius: 50%; position: absolute; top: 18px; left: 50%; transform: translateX(-50%); z-index: 2; }
+        .timeline-item h3 { color: #6c63ff; margin-bottom: 30px; font-size: 22px; }
+
+        .bullet-list { list-style: none; margin-top: 30px; padding: 0; }
+        .bullet-list li { position: relative; padding-left: 35px; margin-bottom: 20px; font-size: 20px; color: rgba(255, 255, 255, 0.7); }
+        .bullet-list li::before { content: '→'; position: absolute; left: 0; color: #6c63ff; font-weight: bold; }
+
+        .stats-row { display: flex; gap: 48px; margin-top: 48px; }
+        .stat-item { display: flex; flex-direction: column; }
+        .stat-number { font-family: 'Sora', sans-serif; font-size: clamp(36px, 5vw, 64px); font-weight: 800; letter-spacing: -0.03em; color: #6c63ff; line-height: 1; }
+        .stat-label { font-size: clamp(13px, 1.1vw, 15px); color: rgba(255,255,255,0.45); margin-top: 6px; font-weight: 500; }
+        
+        .cta-pill { margin-top: 40px; display: inline-flex; align-items: center; gap: 10px; background: rgba(108, 99, 255, 0.15); border: 1px solid rgba(108, 99, 255, 0.4); border-radius: 100px; padding: 14px 32px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; color: #a78bfa; }
+    </style>
+</head>
+<body>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Capa -->
+            <section data-background-image="http://googleusercontent.com/image_collection/image_retrieval/15616357891857481073">
+                <div class="slide-overlay"></div>
+                <div class="slide-base centered">
+                    <p class="subtitle">Apresentação de Projeto 2025</p>
+                    <h1 class="slide-h1">
+                        Nome do <span class="accent-gradient">Projeto</span>
+                    </h1>
+                    <p class="slide-body" style="text-align: center;">
+                        Uma abordagem inovadora para resolver problemas complexos através de tecnologia de ponta e design focado no usuário.
+                    </p>
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <span class="stat-number">2026</span>
+                            <span class="stat-label">Ano</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">v1.0</span>
+                            <span class="stat-label">Versão</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">Autores</span>
+                            <span class="stat-label">NomeS</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 2: Título de Seção -->
+            <section data-background-color="#0a0a0f">
+                <div class="slide-base centered">
+                    <div class="slide-divider"></div>
+                    <h2 class="slide-h2 center">Contexto e Motivação</h2>
+                    <p class="slide-body" style="text-align: center;">
+                        Entendendo o cenário e as razões por trás da iniciativa.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: O Cenário Atual -->
+            <section data-background-color="#0a0a0f">
+                <div class="slide-base">
+                    <h2 class="slide-h2">O Cenário Atual</h2>
+                    <div class="two-col">
+                        <div>
+                            <h3 class="accent" style="font-size: 28px; margin-bottom: 15px;">Mercado e Oportunidade</h3>
+                            <p class="slide-body">
+                                Descreva o ambiente em que o projeto surgiu. O que motivou a criação? Qual é o mercado ou ambiente inserido?
+                            </p>
+                            <ul class="bullet-list">
+                                <li>Ambiente de alta competitividade</li>
+                                <li>Necessidade de agilidade processual</li>
+                                <li>Lacunas em soluções existentes</li>
+                            </ul>
+                        </div>
+                        <div class="image-wrapper">
+                            <img src="http://googleusercontent.com/image_collection/image_retrieval/17306788345198301083" alt="Cenário de Negócios" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Título de Seção (O Desafio) -->
+            <section data-background-color="#0a0a0f">
+                <div class="slide-base centered">
+                    <div class="slide-divider" style="background: #ff4d4d;"></div>
+                    <h2 class="slide-h2 center accent-alert">O Desafio</h2>
+                    <p class="slide-body" style="text-align: center;">
+                        Identificando as dores e obstáculos que impedem o progresso.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Dores -->
+            <section data-background-color="#0a0a0f">
+                <div class="slide-base">
+                    <h2 class="slide-h2">Principais Dores</h2>
+                    <div class="tiled-content">
+                        <div class="tile">
+                            <i class="fa-solid fa-triangle-exclamation tile-icon"></i>
+                            <h3>Dor Crítica 01</h3>
+                            <p class="slide-body" style="font-size: 16px;">Descreva a primeira dor ou dificuldade que o projeto endereça de forma prioritária.</p>
+                        </div>
+                        <div class="tile">
+                            <i class="fa-solid fa-clock tile-icon"></i>
+                            <h3>Dor de Eficiência</h3>
+                            <p class="slide-body" style="font-size: 16px;">A segunda dor relevante, focada em tempo ou recursos desperdiçados no processo antigo.</p>
+                        </div>
+                        <div class="tile">
+                            <i class="fa-solid fa-ban tile-icon"></i>
+                            <h3>Limitação Operacional</h3>
+                            <p class="slide-body" style="font-size: 16px;">Descreva a terceira limitação técnica ou operacional que motivou a nova solução.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Solução (Split Screen) -->
+            <section data-background-color="#0a0a0f">
+                <div class="slide-base" style="padding: 0;">
+                    <div class="two-col" style="gap: 0; height: 100%;">
+                        <div style="padding: 80px;">
+                            <h2 class="slide-h2">Nossa Solução</h2>
+                            <h3 class="accent" style="font-size: 28px; margin-bottom: 20px;">Como resolvemos o problema?</h3>
+                            <p class="slide-body" style="margin-bottom: 20px;">
+                                Apresentamos uma arquitetura robusta que integra as melhores práticas de desenvolvimento para garantir performance e escalabilidade.
+                            </p>
+                            <p class="slide-body">
+                                Nosso foco é na experiência do usuário final, removendo atritos e automatizando fluxos complexos de trabalho.
+                            </p>
+                        </div>
+                        <div style="height: 100%; width: 100%;">
+                            <img src="http://googleusercontent.com/image_collection/image_retrieval/15306784694281932939" alt="Inovação Digital" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Funcionalidades -->
+            <section data-background-color="#0a0a0f">
+                <div class="slide-base">
+                    <h2 class="slide-h2">Funcionalidades Chave</h2>
+                    <div class="tiled-content">
+                        <div class="tile">
+                            <i class="fa-solid fa-bolt tile-icon"></i>
+                            <h3>Performance</h3>
+                            <p class="slide-body" style="font-size: 16px;">Processamento em tempo real com baixa latência para decisões rápidas.</p>
+                        </div>
+                        <div class="tile">
+                            <i class="fa-solid fa-shield-halved tile-icon"></i>
+                            <h3>Segurança</h3>
+                            <p class="slide-body" style="font-size: 16px;">Criptografia de ponta a ponta e conformidade com normas globais.</p>
+                        </div>
+                        <div class="tile">
+                            <i class="fa-solid fa-layer-group tile-icon"></i>
+                            <h3>Escalabilidade</h3>
+                            <p class="slide-body" style="font-size: 16px;">Infraestrutura pronta para crescer conforme a demanda do negócio.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Resultados Título -->
+            <section data-background-image="http://googleusercontent.com/image_collection/image_retrieval/1419515291626261271">
+                <div class="slide-overlay"></div>
+                <div class="slide-base centered">
+                    <div class="slide-divider"></div>
+                    <h2 class="slide-h2 center">Resultados Alcançados</h2>
+                    <p class="slide-body" style="text-align: center;">
+                        Impacto real medido após a implementação da solução.
+                    </p>
+                </div>
+            </section>
+
+
+            <!-- SLIDE 10: Título Roadmap -->
+            <section data-background-color="#0a0a0f">
+                <div class="slide-base centered">
+                    <div class="slide-divider"></div>
+                    <h2 class="slide-h2 center">Roadmap Estratégico</h2>
+                    <p class="slide-body" style="text-align: center;">
+                        Visão de futuro e próximos passos de desenvolvimento.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Timeline -->
+            <section data-background-color="#0a0a0f">
+                <div class="slide-base">
+                    <h2 class="slide-h2">Próximos Passos</h2>
+                    <div class="timeline-layout">
+                        <div class="timeline-line"></div>
+                        <div class="timeline-item">
+                            <h3>Fase 1</h3>
+                            <p class="slide-body" style="font-size: 16px;">Entrega prioritária e validação de MVP.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>Fase 2</h3>
+                            <p class="slide-body" style="font-size: 16px;">Segunda melhoria e expansão de recursos.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>Fase 3</h3>
+                            <p class="slide-body" style="font-size: 16px;">Funcionalidades futuras e integrações.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3>Fase 4</h3>
+                            <p class="slide-body" style="font-size: 16px;">Meta de longo prazo e escala global.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 12: Encerramento -->
+            <section data-background-color="#0a0a0f">
+                <div class="slide-base centered">
+                    <h2 class="slide-h2 center" style="font-size: 80px; margin-bottom: 20px;">
+                        Vamos <span class="accent">Conversar?</span>
+                    </h2>
+                    <p class="slide-body" style="text-align: center;">
+                        Obrigado pela atenção. Aberto a perguntas e colaborações.
+                    </p>
+                    <div style="display: flex; gap: 30px; margin-top: 40px; color: #6c63ff; font-weight: 600; font-size: 20px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-envelope"></i> emaildecadaumdogrupo@assasas
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-globe"></i> repdogit
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            history: true,
+            transition: 'fade',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            controls: true,
+            controlsTutorial: false,
+            progress: true,
+            slideNumber: true,
+            center: false,
+            width: 1280,
+            height: 720,
+            margin: 0,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+</body>
+</html>
