@@ -173,7 +173,7 @@
                     <div class="slide-divider" style="background: #ff4d4d;"></div>
                     <h2 class="slide-h2 center accent-alert">O Desafio</h2>
                     <p class="slide-body" style="text-align: center;">
-                        Identificando as dores e obstáculos que impedem o progresso.
+                        Obstáculos reais enfrentados durante o desenvolvimento do Rastreador de Ônibus de BH.
                     </p>
                 </div>
             </section>
@@ -181,22 +181,22 @@
             <!-- SLIDE 5: Dores -->
             <section data-background-color="#0a0a0f">
                 <div class="slide-base">
-                    <h2 class="slide-h2">Principais Dores</h2>
+                    <h2 class="slide-h2">Principais Dificuldades</h2>
                     <div class="tiled-content">
                         <div class="tile">
-                            <i class="fa-solid fa-triangle-exclamation tile-icon"></i>
-                            <h3>Dor Crítica 01</h3>
-                            <p class="slide-body" style="font-size: 16px;">Descreva a primeira dor ou dificuldade que o projeto endereça de forma prioritária.</p>
+                            <i class="fa-solid fa-shield-halved tile-icon"></i>
+                            <h3>Bloqueio de CORS & Rede</h3>
+                            <p class="slide-body" style="font-size: 16px;">A API pública bloqueia requisições externas diretas com erro de CORS. Proxies públicos da internet falharam por timeout ou instabilidade, inviabilizando o consumo direto pelo navegador na rede escolar.</p>
                         </div>
                         <div class="tile">
-                            <i class="fa-solid fa-clock tile-icon"></i>
-                            <h3>Dor de Eficiência</h3>
-                            <p class="slide-body" style="font-size: 16px;">A segunda dor relevante, focada em tempo ou recursos desperdiçados no processo antigo.</p>
+                            <i class="fa-solid fa-code-branch tile-icon"></i>
+                            <h3>Ambiguidade de Siglas</h3>
+                            <p class="slide-body" style="font-size: 16px;">A API carecia de documentação clara. Chaves como <code>EV</code> (Empresa) causavam colisão de dados, ocultando os veículos. Foi necessário decodificar que <code>NV</code> identificava o veículo físico e <code>NL</code> a linha real para o cruzamento com os CSVs.</p>
                         </div>
                         <div class="tile">
-                            <i class="fa-solid fa-ban tile-icon"></i>
-                            <h3>Limitação Operacional</h3>
-                            <p class="slide-body" style="font-size: 16px;">Descreva a terceira limitação técnica ou operacional que motivou a nova solução.</p>
+                            <i class="fa-solid fa-map-pin tile-icon"></i>
+                            <h3>Conversão de Coordenadas UTM</h3>
+                            <p class="slide-body" style="font-size: 16px;">As paradas de ônibus nos arquivos locais estavam no formato <code>POINT(X Y)</code> sob a projeção UTM SIRGAS 2000 — incompatível com mapas web. Foi preciso integrar a biblioteca Proj4js para convertê-las em Lat/Lng em tempo real.</p>
                         </div>
                     </div>
                 </div>
@@ -210,10 +210,10 @@
                             <h2 class="slide-h2">Nossa Solução</h2>
                             <h3 class="accent" style="font-size: 28px; margin-bottom: 20px;">Como resolvemos o problema?</h3>
                             <p class="slide-body" style="margin-bottom: 20px;">
-                                Apresentamos uma arquitetura robusta que integra as melhores práticas de desenvolvimento para garantir performance e escalabilidade.
+                                <strong>Arquitetura Híbrida Inteligente:</strong> Desenvolvemos um servidor Proxy leve em Node.js customizado para rodar localmente. Ele intercepta as requisições, contorna o bloqueio de CORS da BHTRANS e entrega os dados limpos e validados para o mapa.
                             </p>
                             <p class="slide-body">
-                                Nosso foco é na experiência do usuário final, removendo atritos e automatizando fluxos complexos de trabalho.
+                                <strong>Processamento em Memória:</strong> O front-end faz uso de coleções do tipo <code>Map</code> para indexação instantânea dos CSVs e implementa uma lógica inteligente de <em>Linha Base</em>, permitindo isolar no mapa uma linha específica e todas as suas sub-linhas (ex: agrupar 67-01 e 67-02 ao pesquisar por "67").
                             </p>
                         </div>
                         <div style="height: 100%; width: 100%;">
