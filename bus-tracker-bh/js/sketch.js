@@ -98,9 +98,9 @@ function inicializarMapa() {
 
 async function carregarDadosLocais() {
     const [textoPontos, textoLinhas] = await Promise.all([
-        carregarTexto(CAMINHO_PONTOS, "utf-8"),
-        carregarTexto(CAMINHO_LINHAS, "iso-8859-1")
-    ]);
+    carregarTexto(CAMINHO_PONTOS, "utf-8"),
+    carregarTexto(CAMINHO_LINHAS, "utf-8")
+]);
 
     dadosPontos = parsearPontos(textoPontos);
     mapaLinhas = parsearLinhas(textoLinhas);
@@ -225,7 +225,7 @@ function desenharVeiculos() {
             return;
         }
 
-        const codigoLinha = normalizarCodigoLinha(veiculo.NL || veiculo.LINHA || veiculo.COD_LINHA);
+        const codigoLinha = normalizarCodigoLinha(veiculo.NL || veiculo.LINHA || veiculo.COD_LINHA || veiculo.EV);
         const nomeLinha = mapaLinhas.get(codigoLinha) || mapaLinhas.get(obterCodigoBase(codigoLinha)) || "Linha sem nome na base";
 
         const marcador = L.circleMarker([lat, lng], {
@@ -263,7 +263,7 @@ function filtrarVeiculosPorLinha(veiculos, filtro) {
     const filtroBase = obterCodigoBase(filtroNormalizado);
 
     return veiculos.filter((veiculo) => {
-        const codigoVeiculo = normalizarCodigoLinha(veiculo.NL || veiculo.LINHA || veiculo.COD_LINHA);
+        const codigoVeiculo = normalizarCodigoLinha(veiculo.NL || veiculo.LINHA || veiculo.COD_LINHA || veiculo.EV);
         return codigoVeiculo === filtroNormalizado || obterCodigoBase(codigoVeiculo) === filtroBase;
     });
 }
